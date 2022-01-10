@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+  {% block content %}
+{% load hitcount_tags %}
+    <article class="col-md-12">
+      <!-- Modern - Bootstrap Cards -->
+      <!-- BLOG CARDS -->
+      <h2>Blog Posts</h2>
+      <div class="cards-1 section-gray">
+          <div class="container">
+              <div class="row">
+
+                  <!--One Card-->
+                  {% for post in posts %}
+                  <div class="col-md-4">
+                      <div class="card card-blog">
+                          <div class="card-image">
+                              <a href="#"> <img class="img" src="{{post.image.url}}"> </a>
+                              <div class="ripple-cont"></div>
+                          </div>
+                          <div class="table">
+                              <h6 class="category text-primary">
+                              {% for tag in post.categories.all %}
+                                <i class="fas fa-tags"></i><a href="{{tag.get_url}}">{{tag.title}}</a> 
+                                            {% endfor %}
+                                </h6>
+                                
+                                <h4 class="card-caption" style="min-height: 150px;">
+                                    <a href="{{post.get_url}}">{{post.title}}</a>
+                                </h4>
+                              <div class="ftr">
+                                  <div class="author">
+                                      <a href="#"> <img src="{{post.user.profile_pic.url}}" alt="..." class="avatar img-raised"> <span>{{post.user.fullname}}</span> </a>
+                                  </div>
+                                  <div class="stats"><i class="fas fa-eye"></i> {% get_hit_count for post %} <i class="fas fa-clock"></i> {{post.date|timesince}} ago</div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!--One Card-->
+                  {% endfor %}
+                  
+              </div>
+          </div>
+
+     
+      
+      
+      
+      <div class="demo" style="text-align: center;">
+        {% if posts.paginator.num_pages > 1 %}
+        <nav class="pagination-outer" aria-label="Page navigation">
+            <ul class="pagination">
+            {% if posts.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{posts.previous_page_number}}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">Prev</span>
+                    </a>
+                </li>
+            {% else %}
+            <li class="disabled page-item">
+                    <a href="#" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">Prev</span>
+                    </a>
+                </li>
+            {% endif %}
+                
+                {% if posts.paginator.num_pages < 5 %}
+                    {% for numb in posts.paginator.page_range %}
+                        <li class="page-item {% if posts.number == numb %} active{% endif %}"><a class="page-link" href="?page={{numb}}">{{numb}}</a></li>
+                    {% endfor %}
+                {% else %}
+                    {% if posts.number|add:"-1" != 0 %}
+                    <li class="page-item"><a class="page-link" href="?page={{posts.number|add:"-1"}}">{{posts.number|add:"-1"}}</a></li>
+                    {% endif %}
+                    <li class="page-item active"><a class="page-link" href="?page={{posts.number}}">{{posts.number}}</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{posts.number|add:"1"}}">{{posts.number|add:"1"}}</a></li>
+                    {% if posts.number < posts.paginator.num_pages|add:"-2" %}
+                        <li class="page-item disabled"><a class="page-link" href="?page=">.</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{posts.paginator.num_pages}}">{{posts.paginator.num_pages}}</a></li>
+                    {% endif %}
+                {% endif %}
+                {% if posts.has_next %}
+                <li class="page-item">
+                    <a href="?page={{posts.next_page_number}}" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            {% else %}
+            <li class="disabled page-item">
+                    <a href="#" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+      </div>
+
+
+  </div>
+  </article>
+
+
+ {% endblock content %}

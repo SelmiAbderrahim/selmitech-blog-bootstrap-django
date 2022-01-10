@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+    <article class="col-md-12">
+      <!-- Modern - Bootstrap Cards -->
+      <!-- BLOG CARDS -->
+      <h3>{{post.short}}</h3>
+       <div class="cards-1 section-gray">
+          <div class="container">
+
+                    <div class="light">
+                        <main class="container py-4">
+                            <div class="h1 text-center" id="pageHeaderTitle">{{post.title}}</div>
+
+                        
+                            <article class="postcard light yellow">
+                                <a class="postcard__img_link" href="#">
+                                    <img class="postcard__img" src="{{post.image.url}}" alt="Image Title" />
+                                </a>
+                                <div class="postcard__text t-dark">
+                                    <h1 class="postcard__title yellow"><a href="#">{{post.user.fullname}}</a></h1>
+                                    <div class="postcard__subtitle small">
+                                        <time datetime="2020-05-25 12:00:00">
+                                            <i class="fas fa-clock mr-2"></i> &nbsp;{{post.date|date}}
+                                        </time>
+                                    </div>
+                                    <div class="postcard__bar"></div>
+                                    <div class="postcard__preview-txt">{{post.overview|safe}}</div>
+                                    <ul class="postcard__tagbox">
+                                    {% for cat in post.categories.all %}
+                                        <li class="tag__item"><i class="fas fa-tag mr-2"></i>&nbsp;<a href="{{cat.get_url}}">{{cat}}</a></li>
+                                     {% endfor %}
+                                    </ul>
+                                </div>
+                            </article>
+                        </main>
+                    </div>
+
+                   
+            </div>
+       </div>
+    </article>
+
+    <article class="col-md-12">
+       <div class="cards-1 section-gray">
+          <div class="container" style="display:flex;justify-content:center;alighn-items:center;">
+           <!--SOCIAL SHARE SATRTS-->
+                    
+                    <div id="share"></div>
+                    <!--SOCIAL SHARE ENDS-->
+        </div>
+            </div>
+            </article>
+
+    <article class="col-md-12" id="toof">
+       <div class="cards-1 section-gray">
+          <div class="container">
+                    <!--TABLE OF CONTENTS START-->
+
+                    <div class="col-md-offset-1 col-md-10">
+                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                               
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a class="first" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Table Of Contents
+                                            <span> </span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body" id="tof-links">
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                    <!--TABLE OF CONTENTS END-->
+            </div>
+        </div>
+     </article>
+
+     <article class="col-md-12">
+        <h2></h2>
+        <div class="cards-1 section-gray">
+            <div class="container" id="blog-post-content">
+
+            
+             {% if request.user.is_anonymous %}
+             <!--Only hidden for TOF-->
+               <div hidden="true">
+                    {{post.content|safe}}
+               </div>
+
+            <!--END Hidden-->
+                <div class="noty_bar noty_type__warning noty_theme__unify--v1--light noty_close_with_click noty_has_progressbar noty_has_timeout">
+                <div class="noty_body">
+                    <div class="g-mr-20">
+                        <div class="noty_body__icon">
+                            <i class="hs-admin-bolt"></i>
+                        </div>
+                    </div>
+                    <div  style="font-size:20px;">You need to <a href="#" data-toggle="modal" data-target="#exampleModalCenter">Login</a> to be able to <b>Read</b> this post, <b>Comment</b>, and <b>Reply</b>.</div>
+                </div>
+                <div class="noty_progressbar" style="width: 70%;"></div>
+                </div>
+                    {% else %}
+                {{post.content|safe}}
+                {% endif %}
+            </div>
+        </div>
+     </article>
+
+
+        <!--comments-->
+      <article class="col-md-12">
+        <h2>Comments ({{post.num_comments}})</h2>
+            <div class="cards-1 section-gray">
+                <div class="container justify-content-center mt-5 border-left border-right">
+                    {% if request.user.is_anonymous %}
+                    {% else %}
+                    <form action="{% url 'detail' slug=post.slug %}" role="form" method="post" style="width:100%!important;" class="comment-form">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center pt-3 pb-2"> <textarea name="comment" id="comment" rows="5" placeholder="comment here ..." class="form-control addtxt"></textarea> </div>
+                        <div class="d-flex justify-content-center" style="padding: 10px!important;"><i class="fa fa-envelope" aria-hidden="true"></i> <label for="notify-me">Email me when I get a reply.</label> <input type="checkbox" name="notify-me" id="notify-me" value="on" style="padding: 5px;border: solid 2px #000;"></div>
+                        <div class="d-flex justify-content-center pt-3 pb-2"> <input type="submit" name="comment-form" value="comment" class="form-control addtxt"> </div>
+                    </form>
+                    {% endif %}
+                    <!--one comment starts-->
+                    {% for comment in post.comments.all %}
+                    <div id="first-comment"></div>
+                    <div class="d-flex justify-content-center py-2" id="comment-{{comment.id}}">
+                        <div class="second py-2 px-2"> <span class="text1">{{comment.content}}</span>
+                            <div class="d-flex justify-content-between py-1 pt-2">
+                                
+                                <div><img src="{% if comment.user.profile_pic %}{{comment.user.profile_pic.url}}{% else %}https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png{% endif %}" width="18"><span class="text2">{{comment.user.fullname}}</span>
+                                </div>
+                                <div style="display: grid;grid-template-columns: 5fr 1fr;">
+                                    <div>
+                                        <span class="thumbup"></span><span class="text4">{{comment.date|timesince}} ago</span>
+                                        <span class="text3"><button onclick="showReply(this, 'reply{{comment.id}}');" style="margin-left: 10px!important;border: none!important;">{% if request.user.is_anonymous %}{% else %}  &nbsp;&nbsp;Reply {% endif %}</button></span>
+                                    </div>
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.is_staff or comment.user.user == request.user %}
+                                            <div>
+                                                <a href="#" data-toggle="modal" data-target="#confirm-delete{{comment.id}}"><i class="fa fa-trash-o text-danger p-2" title="delete comment" style="float: right;cursor:pointer;" aria-hidden="true"></i></a>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- CINFIRM DELETING COMMENT -->
+                        <div class="modal fade" id="confirm-delete{{comment.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        Are you sure?
+                                    </div>
+                                    <div class="modal-body">
+                                         <b>Comment to delete: </b>{{comment.content}}
+                                    </div>
+                                    <div class="modal-footer" style="display: flex!important;">
+                                        <button type="button" class="btn btn-default comment-cancel" data-dismiss="modal" style="max-width: 50%!important;">Cancel</button>
+                                        <form action="{% url 'detail' slug=post.slug %}" class="delete-comment-form" method="post"  style="width: 100%!important;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="delete-comment-id" id="delete-comment-id" value="{{comment.id}}">
+                                            <input type="submit" class="btn btn-danger btn-ok" id="delete-comment" name="delete-comment" value="Delete"></input>
+                                        </form>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--add a reply-->
+                        <form action="{% url 'detail' slug=post.slug %}" role="form" method="post" style="width:100%!important;" class="reply-form">
+                            {% csrf_token %}
+                            <div id="reply{{comment.id}}" style="display:none;">
+                                <div class="d-flex justify-content-center pt-3 pb-2"> 
+                                    <textarea name="reply" id="reply" rows="3" placeholder="reply here ..." class="form-control addtxt"></textarea> 
+                                    <div class="d-flex justify-content-center" style="padding: 10px!important;"><i class="fa fa-envelope" aria-hidden="true"></i> <label for="notify-me">Email me when I get a reply.</label> <input type="checkbox" name="reply-notify-me" id="reply-notify-me" value="on" style="padding: 5px;border: solid 2px #000;"></div>
+                                </div>
+                                    <input hidden="true" value="{{comment.id}}" name="comment-id" id="comment-id">
+                                <div class="d-flex justify-content-center pt-3 pb-2"><input type="submit" name="reply-form" value="reply" class="form-control addtxt"> 
+                                </div>
+                            </div>
+                        </form>
+                        <!--add a reply ends-->
+                        <!--One reply starts-->
+                        <div id="first-reply-{{comment.id}}"></div>
+                        {% for reply in comment.replies.all %}
+                        
+                        <div class="d-flex justify-content-center py-2" id="replies">
+                            <div class="second py-2 px-2" id="reply-{{reply.id}}"> <span class="text1">{{reply.content}}</span>
+                                <div class="d-flex justify-content-between py-1 pt-2">
+                                    <div><img src="{% if reply.user.profile_pic %}{{reply.user.profile_pic.url}}{% else %}https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png{% endif %}" width="18">
+                                        <div style="display: grid;grid-template-columns: 5fr 1fr;">
+                                            <span class="text2">{{reply.user.fullname}}</span>
+                                            {% if request.user.is_authenticated %}
+                                                {% if request.user.is_staff or reply.user.user == request.user %}
+                                                    <div>
+                                                        <a href="#" data-toggle="modal" data-target="#confirm-delete-reply-{{reply.id}}"><i class="fa fa-trash-o text-danger p-2" title="delete reply" style="float: right;cursor:pointer;" aria-hidden="true"></i></a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CINFIRM DELETING REPLY -->
+                            <div class="modal fade" id="confirm-delete-reply-{{reply.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            Are you sure?
+                                        </div>
+                                        <div class="modal-body">
+                                            <b>Reply to delete: </b>{{reply.content}}
+                                        </div>
+                                        <div class="modal-footer" style="display: flex!important;">
+                                            <button type="button" class="btn btn-default delete-reply-cancel" data-dismiss="modal" style="max-width: 50%!important;">Cancel</button>
+                                            <form action="{% url 'detail' slug=post.slug %}" class="delete-reply-form" method="post"  style="width: 100%!important;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="delete-reply-id" id="delete-reply-id"  value="{{reply.id}}">
+                                                <input type="submit" class="btn btn-danger btn-ok" id="delete-reply" name="delete-reply" value="Delete"></input>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!--One reply ends-->
+                    </div>
+                    <!--one comment ends-->
+                    {% endfor %}
+                    
+                    
+                </div>     
+            </div>
+     </article>
+
+
+  {% endblock content %}

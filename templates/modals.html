@@ -1,0 +1,173 @@
+  <!-- Login Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content rounded-0">
+        <div class="modal-body p-4 px-5">
+
+          
+          <div class="main-content text-center">
+              
+              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close" id="close-login-modal">
+                  <span aria-hidden="true"><i class="fas fa-times float-right"></i></span>
+                </a>
+
+              
+                    <div class="col-md-12 col-xs-12 col-sm-12 login_form ">
+                            <div class="row">
+                                <h2>Log In</h2>
+                            </div>
+                            <div class="row">
+                                {% if "post" in request.path %}
+                                <form role="form" action="{% url 'detail' slug=post.slug %}" method="post" class="form-group" id="signin-form">
+                                {% elif "category" in request.path %}
+                                <form role="form" action="{% url 'category' slug=category.slug %}" method="post" class="form-group" id="signin-form">
+                                 {% elif "search" in request.path %}
+                                <form role="form" action="{% url 'search' %}" method="post" class="form-group" id="signin-form">
+                                {% else %}
+                                <form role="form" action="." method="post" class="form-group" id="signin-form">
+                                {% endif %}
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <input required type="text" name="username" id="signin-username" class="form__input" placeholder="Username">
+                                    </div>
+                                    <div class="row">
+                                        <!-- <span class="fa fa-lock"></span> -->
+                                        <input required type="password" name="password" id="signin-password" class="form__input" placeholder="Password">
+                                    </div>
+                                    <div class="row">
+                                        <input type="checkbox" name="remember_me" id="remember_me" class="">
+                                        <label for="remember_me">Remember Me!</label>
+                                    </div>
+                                    <div class="row">
+                                        <input type="submit" value="Submit" class="btn" name="login-form">
+                                    </div>
+                                </form>
+                                
+                            </div>
+                            <div class="row">
+                                <p>Don't have an account? <span style="cursor:pointer;" id="register-btn">Register Here</span></p>
+                            </div>
+                    </div>
+               
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--Signup Modal -->
+
+<div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content rounded-0">
+        <div class="modal-body p-4 px-5">
+
+          
+          <div class="main-content text-center">
+              
+              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close" id="close-signup-modal">
+                  <span aria-hidden="true"><i class="fas fa-times float-right"></i></span>
+                </a>
+
+              
+                    <div class="col-md-12 col-xs-12 col-sm-12 login_form ">
+                            <div class="row">
+                                <h2>Sign Up</h2>
+                            </div>
+                            <div class="row">
+                                {% if "post" in request.path %}
+                                <form role="form" action="{% url 'detail' slug=post.slug %}" method="post" class="form-group" id="signup-form">
+                                {% elif "category" in request.path %}
+                                <form role="form" action="{% url 'category' slug=category.slug %}" method="post" class="form-group" id="signup-form">
+                                 {% elif "search" in request.path %}
+                                <form role="form" action="{% url 'search' %}" method="post" class="form-group" id="signup-form">
+                                {% else %}
+                                <form role="form" action="." method="post" class="form-group" id="signup-form">
+                                    {% endif %}
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <input required type="text" name="username" id="signup-username" class="form__input" placeholder="username" minlength="6">
+                                    </div>
+                                    <div class="row">
+                                        <input required type="email" name="email" id="signup-email" class="form__input" placeholder="email">
+                                    </div>
+                                    <div class="row">
+                                        <input required type="password" name="password" id="signup-password" class="form__input" placeholder="password" minlength="8">
+                                    </div>
+                                     <div class="row">
+                                        <input type="submit" value="Register" class="btn" name="signup-form">
+                                    </div>
+                                </form>
+                                
+                            </div>
+                            <div class="row">
+                                <p>Already have an account? <span style="cursor:pointer;" id="login-btn2">Login Here</span></p>
+                            </div>
+                    </div>
+               
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- Contact Modal -->
+
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content rounded-0">
+        <div class="modal-body p-4 px-5">
+
+          
+          <div class="main-content text-center">
+              
+              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close" id="close-contact-modal">
+                  <span aria-hidden="true"><i class="fas fa-times float-right"></i></span>
+                </a>
+
+              
+                    <div class="col-md-12 col-xs-12 col-sm-12 login_form ">
+                            <div class="row">
+                                <h2>Contact Us</h2>
+                            </div>
+                            <div class="row">
+                                {% if "post" in request.path %}
+                                <form role="form" action="{% url 'detail' slug=post.slug %}" method="post" class="form-group">
+                                {% elif "category" in request.path %}
+                                <form role="form" action="{% url 'category' slug=category.slug %}" method="post" class="form-group">
+                                 {% elif "search" in request.path %}
+                                <form role="form" action="{% url 'search' %}" method="post" class="form-group">
+                                {% else %}
+                                <form role="form" action="." method="post" class="form-group">
+                                {% endif %}
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <input required type="text" name="username" id="username" class="form__input" placeholder="Username">
+                                    </div>
+                                    <div class="row">
+                                        <input required type="email" name="email" id="email" class="form__input" placeholder="email">
+                                    </div>
+                                    <div class="row">
+                                        <textarea name="message" id="" cols="30" rows="3" class="form__input" placeholder="I want to ask you for ...."></textarea>
+                                    </div>
+                                     <div class="row">
+                                        <input type="submit" value="Send" class="btn" name="contact">
+                                    </div>
+                                </form>
+                            </div>
+
+                    </div>
+               
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<!-- Modal -->
